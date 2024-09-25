@@ -33,7 +33,7 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com-perso:nicolascamut/udemy-maven-beginner-to-guru-release-plugin.git</developerConnection>
-        <url>https://github.com/nicolascamut/udemy-maven-beginner-to-guru-release-plugin.git</url>
+        <url>https://github.com/nicolascamut/udemy-maven-beginner-to-guru-release-plugin</url>
         <tag>HEAD</tag>
     </scm>
 
