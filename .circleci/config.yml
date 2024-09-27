@@ -44,7 +44,15 @@ jobs:
             - run:
                 name: Test
                 command: mvn integration-test
+    deploy-to-dev:
+        steps:
+            - run: echo "Deploying to dev"
 workflows:
     build:
         jobs:
             - build-and-test
+            - deploy-to-dev:
+                  filters:
+                      branches:
+                          only:
+                              - master
