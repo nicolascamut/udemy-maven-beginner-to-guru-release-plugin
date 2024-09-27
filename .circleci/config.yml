@@ -52,6 +52,12 @@ jobs:
         resource_class: small
         steps:
             - run: echo "Deploying to dev"
+    deploy-to-prod:
+        docker:
+            - image: cimg/base:2023.03
+        resource_class: small
+        steps:
+            - run: echo "Deploying to prod"
 workflows:
     build:
         jobs:
@@ -63,3 +69,11 @@ workflows:
                             - master
                 requires:
                     - build-and-test
+            - wait-for-approval: # <<< A job that will require manual approval in the CircleCI web application.
+                type: approval # This key-value pair will set your workflow to a status of "Needs Approval"
+                requires: # We only run the "hold" job when test2 has succeeded
+                    - deploy-to-dev
+            - deploy-to-prod:
+                # no need to filter in the master branch as the dependent job deploy-to-dev does it already
+                requires:
+                    - wait-for-approval
