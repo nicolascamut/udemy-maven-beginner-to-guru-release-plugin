@@ -38,6 +38,13 @@
     </scm>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.6</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,6 +62,19 @@
         </plugins>
     </build>
 
+
+    <distributionManagement>
+        <repository>
+            <id>packagecloud.release</id>
+            <url>packagecloud+https://packagecloud.io/nicopackagecloud/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>packagecloud.snapshot</id>
+            <url>packagecloud+https://packagecloud.io/nicopackagecloud/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+<!--
     <distributionManagement>
         <snapshotRepository>
             <id>nexus-snapshot</id>
@@ -65,4 +85,5 @@
             <url>http://localhost:8081/repository/nexus-release</url>
         </repository>
     </distributionManagement>
+-->
 </project>
