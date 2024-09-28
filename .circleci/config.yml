@@ -85,14 +85,14 @@ jobs:
 workflows:
     build-and-deploy:
         jobs:
-            - build-and-test
+            - build
             - deploy-to-dev:
                 filters:
                     branches:
                         only:
                             - master
                 requires:
-                    - build-and-test
+                    - build
             - wait-for-approval: # <<< A job that will require manual approval in the CircleCI web application.
                 type: approval # This key-value pair will set your workflow to a status of "Needs Approval"
                 requires: # We only run the "hold" job when test2 has succeeded
