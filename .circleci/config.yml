@@ -46,6 +46,22 @@ jobs:
             - run:
                 name: Test
                 command: mvn integration-test
+
+            - when:
+                  # when not master => pull request => snapshot
+                  condition:
+                        not:
+                            equal: [ master, << pipeline.git.branch >> ]
+                  steps:
+                      - run: echo "will publish the artifact's snapshot to the artifact repo"
+
+            - when:
+                  # when not master => pull request => snapshot
+                  condition:
+                      equal: [ master, << pipeline.git.branch >> ]
+                  steps:
+                      - run: echo "will do the release of the artifact to the artifact repo"
+
     deploy-to-dev:
         docker:
             - image: cimg/base:2023.03
