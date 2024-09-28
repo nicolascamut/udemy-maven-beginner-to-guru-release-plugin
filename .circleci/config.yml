@@ -49,26 +49,29 @@ jobs:
 
             - when:
                   # when not master => pull request created => snapshot build and test
-                  condition:
-                        not:
-                            equal: [ master, << pipeline.git.branch >> ]
-                  steps:
-                      - run: echo "will deploy (build and test as well) the artifact's snapshot to the artifact repo"
-                      - run:
-                          name: Maven Deploy (Snapshot, build and test as well)
-                          command: mvn deploy -s .circleci/settings.xml
+                condition:
+                    not:
+                        equal: [ master, << pipeline.git.branch >> ]
+                steps:
+                    - run: echo "will deploy (build and test as well) the artifact's snapshot to the artifact repo"
+                    - run:
+                        name: Maven Deploy (Snapshot, build and test as well)
+                        command: mvn deploy -s .circleci/settings.xml
 
             - when:
                   # when not master => pull request => snapshot
                 condition:
                     equal: [ master, << pipeline.git.branch >> ]
                 steps:
-                - run: echo "will release (build and test as well) the artifact to the artifact repo"
-                - run: git config user.email "nicolas.camut@gmail.com"
-                - run: git config user.name "Via CircleCI Build"
-                - run:
-                    name: Maven Deploy (Snapshot, build and test as well)
-                    command: mvn --batch-mode release:prepare release:perform -s .circleci/settings.xml
+                    - run: echo "will release (build and test as well) the artifact to the artifact repo"
+                    - run: git config user.email "nicolas.camut@gmail.com"
+                    - run: git config user.name "Via CircleCI Build"
+                    - add_ssh_keys:
+                        fingerprints:
+                          - "SHA256:g7GmURk+chqXCgL+47l3BTA2NjZsEscz6vr1DTOwD7Y"
+                    - run:
+                        name: Maven Release (build and test as well)
+                        command: mvn --batch-mode release:prepare release:perform -s .circleci/settings.xml
 
     deploy-to-dev:
         docker:
