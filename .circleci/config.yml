@@ -6,7 +6,7 @@ version: 2.1
 # See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
 jobs:
     # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-    build-and-test:
+    build:
         # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
         # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
         docker:
@@ -37,30 +37,38 @@ jobs:
                       - ~/.m2
                   key: v1-dependencies-{{ checksum "pom.xml" }}
 
-            # Use mvn clean and package as the standard maven build phase
-            - run:
-                name: Build
-                command: mvn -B -DskipTests clean package
-
-            # Then run your tests!
-            - run:
-                name: Test
-                command: mvn integration-test
+#            # Use mvn clean and package as the standard maven build phase
+#            - run:
+#                name: Build
+#                command: mvn -B -DskipTests clean package
+#
+#            # Then run your tests!
+#            - run:
+#                name: Test
+#                command: mvn integration-test
 
             - when:
-                  # when not master => pull request => snapshot
+                  # when not master => pull request created => snapshot build and test
                   condition:
                         not:
                             equal: [ master, << pipeline.git.branch >> ]
                   steps:
-                      - run: echo "will publish the artifact's snapshot to the artifact repo"
+                      - run: echo "will deploy (build and test as well) the artifact's snapshot to the artifact repo"
+                      - run:
+                          name: Maven Deploy (Snapshot, build and test as well)
+                          command: mvn deploy -s .circleci/settings.xml
 
             - when:
                   # when not master => pull request => snapshot
-                  condition:
-                      equal: [ master, << pipeline.git.branch >> ]
-                  steps:
-                      - run: echo "will do the release of the artifact to the artifact repo"
+                condition:
+                    equal: [ master, << pipeline.git.branch >> ]
+                steps:
+                - run: echo "will release (build and test as well) the artifact to the artifact repo"
+                - run: git config user.email "nicolas.camut@gmail.com"
+                - run: git config user.name "Via CircleCI Build"
+                - run:
+                    name: Maven Deploy (Snapshot, build and test as well)
+                    command: mvn --batch-mode release:prepare release:perform -s .circleci/settings.xml
 
     deploy-to-dev:
         docker:
@@ -77,14 +85,14 @@ jobs:
 workflows:
     build-and-deploy:
         jobs:
-            - build-and-test
+            - build
             - deploy-to-dev:
                 filters:
                     branches:
                         only:
                             - master
                 requires:
-                    - build-and-test
+                    - build
             - wait-for-approval: # <<< A job that will require manual approval in the CircleCI web application.
                 type: approval # This key-value pair will set your workflow to a status of "Needs Approval"
                 requires: # We only run the "hold" job when test2 has succeeded

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <servers>
+        <server>
+            <id>packagecloud.release</id>
+            <!--
+                the api key is set as an environment variables in the circleci project for this repo.
+                It's made available via environment variables available to the workflow execution .
+            -->
+            <password>${env.PACKAGECLOUD_API_KEY}</password>
+        </server>
+        <server>
+            <id>packagecloud.snapshot</id>
+            <password>${env.PACKAGECLOUD_API_KEY}</password>
+        </server>
+    </servers>
+</settings>
