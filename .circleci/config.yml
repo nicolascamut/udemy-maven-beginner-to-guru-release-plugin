@@ -67,8 +67,8 @@ jobs:
                     - run: git config user.email "nicolas.camut@gmail.com"
                     - run: git config user.name "Via CircleCI Build"
                     - add_ssh_keys:
-                          fingerprints:
-                              - "SHA256:g7GmURk+chqXCgL+47l3BTA2NjZsEscz6vr1DTOwD7Y"
+                        fingerprints:
+                          - "SHA256:g7GmURk+chqXCgL+47l3BTA2NjZsEscz6vr1DTOwD7Y"
                     - run:
                         name: Maven Release (build and test as well)
                         command: mvn --batch-mode release:prepare release:perform -s .circleci/settings.xml
