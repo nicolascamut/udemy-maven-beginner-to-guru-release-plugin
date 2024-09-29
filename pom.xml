@@ -40,7 +40,8 @@
 
     <ciManagement>
         <system>CircleCi</system>
-        <url>https://app.circleci.com/pipelines/github/nicolascamut/udemy-maven-beginner-to-guru-release-plugin</url>
+<!--        <url>https://app.circleci.com/pipelines/github/nicolascamut/udemy-maven-beginner-to-guru-release-plugin</url>-->
+        <url>https://circleci.com/gh/nicolascamut/udemy-maven-beginner-to-guru-release-plugin</url>
     </ciManagement>
 
     <build>
