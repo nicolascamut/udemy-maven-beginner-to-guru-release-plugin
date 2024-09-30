@@ -1,5 +1,3 @@
-# Apache Maven: Beginner to Guru
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicolascamut/udemy-maven-beginner-to-guru-release-plugin/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/nicolascamut/udemy-maven-beginner-to-guru-release-plugin/tree/master)
 
-This respository contains code examples for the online course [Apache Maven: Beginner to Guru.](https://www.udemy.com/draft/2043700/?couponCode=GITHUB_REPO)
-
-## Maven Release Plugin Examples
+## Maven Release Plugin Playground Project
